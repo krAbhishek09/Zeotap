@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluate Rule</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        form {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            margin: auto;
+            padding: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        p {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Evaluate Rule</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="rule_id">Select Rule ID:</label>
+        <select id="rule_id" name="rule_id" required>
+            {% for rule in rules %}
+                <option value="{{ rule.id }}">ID: {{ rule.id }} - {{ rule.rule_string }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="attributes">Attributes (JSON):</label>
+        <textarea id="attributes" name="attributes" required rows="4">
+            {"age": 35, "department": "Sales", "salary": 60000, "experience": 3}
+        </textarea>
+
+        <button type="submit">Evaluate</button>
+    </form>
+
+    {% if result %}
+        <p>Result: {{ result }}</p>
+    {% endif %}
+
+    <p><a href="{% url 'create_rule' %}">Create New Rule</a></p>
+</body>
+</html>
